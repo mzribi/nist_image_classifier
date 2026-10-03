@@ -1,0 +1,30 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake build-essential qtbase5-dev libgl1-mesa-dev
+
+    - name: CMake configure
+      run: cmake -B build
+
+    - name: CMake build
+      run: cmake --build build --parallel
+
+    - name: Run self-test (headless)
+      env:
+        QT_QPA_PLATFORM: offscreen
+      run: ./build/sudoku --selftest
