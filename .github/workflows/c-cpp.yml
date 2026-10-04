@@ -24,7 +24,10 @@ jobs:
     - name: CMake build
       run: cmake --build build --parallel
 
-    - name: Run self-test (headless)
-      env:
-        QT_QPA_PLATFORM: offscreen
-      run: ./build/sudoku --selftest
+    - name: Run all tests
+      run: |
+          chmod +x build/nis_tests
+          ./build/nis_tests
+          ./build/nis_tests graphe
+          ./build/nis_tests median
+          ./build/nis_tests kmeans
